@@ -18,7 +18,6 @@ class TemperatureModel(Base):
         DateTime(timezone=False),
         default=func.now(),
         server_default=func.now(),
-        onupdate=func.now(),
         nullable=False,
     )
     temperature: Mapped[float] = mapped_column(Float, nullable=False)

@@ -7,6 +7,7 @@ import temperature.crud as crud
 import temperature.schemas as schemas
 import temperature.utils as utils
 from dependencies import get_db
+from temperature.models import TemperatureModel
 
 router = APIRouter()
 
@@ -16,7 +17,10 @@ async def update_temperatures(db: AsyncSession = Depends(get_db)) -> Dict[str, s
     cities = await utils.get_cities_id_and_name(db)
     for city_id, city_name in cities:
         data = await utils.fetch_weather(city_name)
-        await crud.create_temperature(db, city_id, data["temperature"])
+        temperature = TemperatureModel(city_id=city_id, temperature=data["temperature"])
+        db.add(temperature)
+
+    await db.commit()
 
     return {"msg": "Temperatures was successfully changed."}
 
