@@ -16,21 +16,19 @@ async def update_temperatures(db: AsyncSession = Depends(get_db)) -> Dict[str, s
     cities = await utils.get_cities_id_and_name(db)
     for city_id, city_name in cities:
         data = await utils.fetch_weather(city_name)
-        await crud.update_temperatures(
-            db, city_id, data["temperature"], data["date_time"]
-        )
+        await crud.create_temperature(db, city_id, data["temperature"])
 
     return {"msg": "Temperatures was successfully changed."}
 
 
-@router.get("/temperatures/{city_id}", response_model=schemas.TemperatureBase)
+@router.get("/temperatures/{city_id}", response_model=schemas.TemperatureListResponse)
 async def get_temperature_by_city(
     city_id: int, db: AsyncSession = Depends(get_db)
 ) -> schemas.TemperatureListResponse:
-    result = await crud.get_temperature_by_city(db, city_id)
-    if result is None:
+    results = await crud.get_temperature_by_city(db, city_id)
+    if len(results) == 0:
         raise HTTPException(status_code=404, detail="City was not found")
-    return schemas.TemperatureBase.model_validate(result)
+    return schemas.TemperatureListResponse(temperatures=results)
 
 
 @router.get("/temperatures/", response_model=schemas.TemperatureListResponse)

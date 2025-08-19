@@ -12,5 +12,9 @@ class TemperatureBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class TemperatureResponse(TemperatureBase):
+    id: int
+
+
 class TemperatureListResponse(BaseModel):
-    temperatures: List[TemperatureBase]
+    temperatures: List[TemperatureResponse]

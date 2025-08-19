@@ -1,3 +1,5 @@
+from typing import List
+
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from sqlalchemy.sql.sqltypes import Integer, String
 
@@ -12,4 +14,4 @@ class CityModel(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     additional_info: Mapped[str] = mapped_column(String, nullable=False)
 
-    temperature = relationship(TemperatureModel, back_populates="city")
+    temperatures: Mapped[List[TemperatureModel]] = relationship(back_populates="city")

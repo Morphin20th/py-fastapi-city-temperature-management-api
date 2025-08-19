@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import List, Optional
 
 from sqlalchemy import select, delete
@@ -6,9 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from city.models import CityModel
 from temperature.models import TemperatureModel
-
-from sqlalchemy.ext.asyncio import AsyncSession
-from datetime import datetime
 
 
 async def create_new_city(
@@ -56,7 +52,7 @@ async def update_city(
     return city
 
 
-async def delete_city(db: AsyncSession, city_id: int):
+async def delete_city(db: AsyncSession, city_id: int) -> None:
     query = delete(CityModel).where(CityModel.id == city_id)
     await db.execute(query)
     await db.commit()

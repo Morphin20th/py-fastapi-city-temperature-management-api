@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import httpx
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,11 +15,9 @@ async def fetch_weather(city: str) -> dict:
             params={"key": settings.WEATHER_API_KEY, "q": city},
         )
         data = response.json()
-        localtime = datetime.strptime(data["location"]["localtime"], "%Y-%m-%d %H:%M")
         return {
             "city": data["location"]["name"],
             "temperature": data["current"]["temp_c"],
-            "date_time": localtime,
         }
 
 

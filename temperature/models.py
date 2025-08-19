@@ -23,4 +23,4 @@ class TemperatureModel(Base):
     )
     temperature: Mapped[float] = mapped_column(Float, nullable=False)
 
-    city = relationship("CityModel", back_populates="temperature")
+    city = relationship("CityModel", back_populates="temperatures")
